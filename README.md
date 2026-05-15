@@ -31,7 +31,7 @@ ai-agent-orchestration-dashboard/
 │   │   ├── db/              # Database session foundation
 │   │   ├── models/          # Future database models
 │   │   ├── schemas/         # Future Pydantic request/response schemas
-│   │   └── services/        # Future service integrations, including OpenRouter
+│   │   └── services/        # OpenRouter client and orchestration services
 │   ├── tests/               # Pytest test suite
 │   ├── .env.example         # Backend environment variable template
 │   ├── pyproject.toml       # Python tooling configuration
@@ -64,6 +64,7 @@ The backend is prepared for:
 - OpenRouter API integration foundation
 - Base agent plus specialized planner, research, architect, developer, reviewer, and final answer agents
 - First Planner Agent endpoint at `/api/agents/planner/run`
+- Sequential orchestration endpoint at `/api/workflows/run`
 - SQLite database configuration foundation
 - Pytest testing
 
@@ -90,6 +91,14 @@ Run the planner agent endpoint:
 curl -X POST http://localhost:8000/api/agents/planner/run \
   -H "Content-Type: application/json" \
   -d '{"task": "Create an AI agent orchestration dashboard"}'
+```
+
+Run the full sequential workflow endpoint:
+
+```bash
+curl -X POST http://localhost:8000/api/workflows/run \
+  -H "Content-Type: application/json" \
+  -d '{"task": "Analyze this startup idea and create a technical implementation plan."}'
 ```
 
 Run tests:
@@ -122,14 +131,12 @@ The frontend runs on `http://localhost:5173` by default and expects the backend 
 
 ## Current Scope
 
-This version contains the clean full-stack foundation plus the first simple backend Planner Agent and the initial set of specialized agent classes. It does not implement full multi-agent workflow orchestration yet.
+This version contains the clean full-stack foundation, the OpenRouter client, specialized backend agents, and the first sequential multi-agent workflow orchestration endpoint.
 
 Planned future work includes:
 
-1. OpenRouter chat completion integration
-2. Agent role definitions and prompts
-3. Sequential and parallel orchestration workflows
-4. SQLite workflow run history
-5. React Flow workflow visualization
-6. Real-time workflow status updates
-7. Docker support
+1. SQLite workflow run history
+2. React Flow workflow visualization
+3. Real-time workflow status updates
+4. Parallel or conditional orchestration workflows
+5. Docker support
