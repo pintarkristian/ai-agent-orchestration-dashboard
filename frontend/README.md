@@ -2,14 +2,32 @@
 
 React + TypeScript frontend foundation for the AI Agent Orchestration Dashboard.
 
-## Prepared For
+## Included
 
-- React application with Vite
+- Vite React application
 - TypeScript
 - Tailwind CSS
-- Axios API client setup
-- TanStack Query provider setup
-- React Flow dependency for future workflow visualization
+- Axios API client
+- TanStack Query provider
+- React Router pages
+- React Flow dependency prepared for a future workflow visualization milestone
+- Clean responsive dashboard layout
+
+## Pages
+
+- Dashboard: project overview and backend health status
+- Workflow Run: task input layout and planned execution preview
+- Workflow History: table foundation for saved workflow runs
+
+## Components
+
+- `AppLayout`
+- `Header`
+- `Sidebar`
+- `Card`
+- `StatusBadge`
+- `LoadingState`
+- `ErrorState`
 
 ## Local Setup
 
@@ -19,3 +37,5 @@ npm install
 cp .env.example .env
 npm run dev
 ```
+
+The frontend expects the backend API at `http://localhost:8000` by default.
