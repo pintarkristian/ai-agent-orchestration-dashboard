@@ -11,8 +11,9 @@ class Settings(BaseSettings):
     environment: str = "development"
 
     openrouter_api_key: str | None = None
+    openrouter_model: str = "openai/gpt-4o-mini"
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
-    openrouter_default_model: str = "openai/gpt-4o-mini"
+    openrouter_timeout_seconds: float = 60.0
 
     database_url: str = "sqlite:///./orchestration.db"
 
