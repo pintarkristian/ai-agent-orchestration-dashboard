@@ -5,7 +5,7 @@ Python FastAPI backend foundation for the AI Agent Orchestration Dashboard.
 ## Prepared For
 
 - FastAPI application structure
-- Pydantic settings and schemas
+- Pydantic settings, schemas, and core orchestration data models
 - Async HTTP requests with `httpx`
 - OpenRouter API client foundation
 - SQLite database configuration foundation
