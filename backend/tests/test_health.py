@@ -3,10 +3,14 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 
-def test_health_check_returns_ok() -> None:
+def test_health_endpoint_returns_status_version_and_environment() -> None:
     client = TestClient(app)
 
-    response = client.get("/api/health")
+    response = client.get("/health")
 
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+
+    data = response.json()
+    assert data["status"] == "ok"
+    assert data["version"] == "0.1.0"
+    assert "environment" in data

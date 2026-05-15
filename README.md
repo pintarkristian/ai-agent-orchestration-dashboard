@@ -60,7 +60,7 @@ The backend is prepared for:
 - Pydantic and pydantic-settings
 - Async HTTP requests with `httpx`
 - OpenRouter API integration foundation
-- SQLite with SQLAlchemy async support and `aiosqlite`
+- SQLite database configuration foundation
 - Pytest testing
 
 Run locally:
@@ -71,13 +71,13 @@ python -m venv .venv
 source .venv/bin/activate  # Windows PowerShell: .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 cp .env.example .env
-uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload
 ```
 
 Health check:
 
 ```bash
-curl http://localhost:8000/api/health
+curl http://localhost:8000/health
 ```
 
 Run tests:
