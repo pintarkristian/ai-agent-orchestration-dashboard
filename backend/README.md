@@ -8,6 +8,7 @@ Python FastAPI backend foundation for the AI Agent Orchestration Dashboard.
 - Pydantic settings, schemas, and core orchestration data models
 - Async HTTP requests with `httpx`
 - OpenRouter API client foundation
+- Simple Planner Agent execution endpoint
 - SQLite database configuration foundation
 - Pytest-based testing
 
@@ -40,6 +41,14 @@ Health check:
 
 ```bash
 curl http://localhost:8000/health
+```
+
+Run the planner agent endpoint:
+
+```bash
+curl -X POST http://localhost:8000/api/agents/planner/run \
+  -H "Content-Type: application/json" \
+  -d '{"task": "Create an AI agent orchestration dashboard"}'
 ```
 
 Run tests:

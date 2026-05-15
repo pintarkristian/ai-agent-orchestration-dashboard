@@ -24,6 +24,7 @@ The backend will coordinate agents, decide execution order, send requests to Ope
 ai-agent-orchestration-dashboard/
 ├── backend/                 # Python FastAPI backend
 │   ├── app/
+│   │   ├── agents/          # Base and role-specific AI agents
 │   │   ├── api/             # API route modules
 │   │   ├── core/            # Configuration and shared settings
 │   │   ├── db/              # Database session foundation
@@ -60,6 +61,7 @@ The backend is prepared for:
 - Pydantic and pydantic-settings
 - Async HTTP requests with `httpx`
 - OpenRouter API integration foundation
+- First Planner Agent endpoint at `/api/agents/planner/run`
 - SQLite database configuration foundation
 - Pytest testing
 
@@ -78,6 +80,14 @@ Health check:
 
 ```bash
 curl http://localhost:8000/health
+```
+
+Run the planner agent endpoint:
+
+```bash
+curl -X POST http://localhost:8000/api/agents/planner/run \
+  -H "Content-Type: application/json" \
+  -d '{"task": "Create an AI agent orchestration dashboard"}'
 ```
 
 Run tests:
@@ -110,7 +120,7 @@ The frontend runs on `http://localhost:5173` by default and expects the backend 
 
 ## Current Scope
 
-This version focuses only on a clean and professional project foundation. It does not implement agent orchestration business logic yet.
+This version contains the clean full-stack foundation plus the first simple backend Planner Agent. It does not implement full multi-agent workflow orchestration yet.
 
 Planned future work includes:
 
