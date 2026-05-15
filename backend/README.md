@@ -19,6 +19,20 @@ python -m venv .venv
 source .venv/bin/activate  # Windows PowerShell: .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 cp .env.example .env
+```
+
+Edit `.env` and set your OpenRouter values when you are ready to call the API:
+
+```env
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=openai/gpt-4o-mini
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+OPENROUTER_TIMEOUT_SECONDS=60
+```
+
+Run the API:
+
+```bash
 python -m uvicorn app.main:app --reload
 ```
 
@@ -33,3 +47,5 @@ Run tests:
 ```bash
 pytest
 ```
+
+The OpenRouter unit tests use `httpx.MockTransport`, so they do not call the real OpenRouter API.
