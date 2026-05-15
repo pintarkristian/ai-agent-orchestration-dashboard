@@ -16,6 +16,7 @@ from app.agents.base_agent import CompletionClient
 from app.models.agent import AgentExecutionResult
 from app.models.enums import AgentRole, WorkflowStatus
 from app.models.workflow import WorkflowResult, WorkflowStep
+from app.repositories.workflow_repository import WorkflowRepository
 
 
 class WorkflowAgent(Protocol):
@@ -37,7 +38,9 @@ class SequentialOrchestrator:
         *,
         openrouter_client: CompletionClient | None = None,
         agents: list[WorkflowAgent] | None = None,
+        workflow_repository: WorkflowRepository | None = None,
     ) -> None:
+        self.workflow_repository = workflow_repository
         if agents is not None:
             self.agents = agents
         else:
@@ -66,8 +69,9 @@ class SequentialOrchestrator:
             if result.status == WorkflowStatus.FAILED:
                 workflow_completed_at = datetime.now(UTC)
                 workflow_error = self._workflow_error(agent=agent, result=result)
+                duration_ms = self._duration_ms(workflow_started_at, workflow_completed_at)
 
-                return WorkflowResult(
+                failed_result = WorkflowResult(
                     id=workflow_id,
                     input=task,
                     output=None,
@@ -75,14 +79,13 @@ class SequentialOrchestrator:
                     status=WorkflowStatus.FAILED,
                     steps=steps,
                     error=workflow_error,
+                    created_at=workflow_started_at,
                     started_at=workflow_started_at,
                     completed_at=workflow_completed_at,
-                    duration_ms=self._duration_ms(workflow_started_at, workflow_completed_at),
-                    total_duration_ms=self._duration_ms(
-                        workflow_started_at,
-                        workflow_completed_at,
-                    ),
+                    duration_ms=duration_ms,
+                    total_duration_ms=duration_ms,
                 )
+                return self._persist_result(failed_result)
 
             previous_outputs.append(step)
             if agent.role == AgentRole.FINAL_ANSWER:
@@ -91,7 +94,7 @@ class SequentialOrchestrator:
         workflow_completed_at = datetime.now(UTC)
         total_duration_ms = self._duration_ms(workflow_started_at, workflow_completed_at)
 
-        return WorkflowResult(
+        completed_result = WorkflowResult(
             id=workflow_id,
             input=task,
             output=final_answer,
@@ -99,11 +102,19 @@ class SequentialOrchestrator:
             status=WorkflowStatus.COMPLETED,
             steps=steps,
             error=None,
+            created_at=workflow_started_at,
             started_at=workflow_started_at,
             completed_at=workflow_completed_at,
             duration_ms=total_duration_ms,
             total_duration_ms=total_duration_ms,
         )
+        return self._persist_result(completed_result)
+
+    def _persist_result(self, result: WorkflowResult) -> WorkflowResult:
+        """Persist a workflow result when a repository was provided."""
+        if self.workflow_repository is None:
+            return result
+        return self.workflow_repository.save_workflow_result(result)
 
     @staticmethod
     def _build_default_agents(openrouter_client: CompletionClient) -> list[WorkflowAgent]:

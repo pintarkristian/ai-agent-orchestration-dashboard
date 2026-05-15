@@ -1,25 +1,48 @@
-from collections.abc import AsyncGenerator
+from __future__ import annotations
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from collections.abc import Generator
+
+from sqlalchemy import Engine, create_engine
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import get_settings
+from app.db.models import Base
+
+
+def _connect_args(database_url: str) -> dict[str, bool]:
+    """Return SQLAlchemy connect args for the configured database."""
+    if database_url.startswith("sqlite"):
+        return {"check_same_thread": False}
+    return {}
+
 
 settings = get_settings()
-
-engine = create_async_engine(
+engine = create_engine(
     settings.database_url,
-    echo=False,
+    connect_args=_connect_args(settings.database_url),
+    future=True,
+)
+SessionLocal = sessionmaker(
+    bind=engine,
+    autocommit=False,
+    autoflush=False,
+    expire_on_commit=False,
     future=True,
 )
 
-AsyncSessionLocal = async_sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
-)
+
+def init_db(db_engine: Engine | None = None) -> None:
+    """Create database tables if they do not already exist."""
+    Base.metadata.create_all(bind=db_engine or engine)
 
 
-async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
-    """Provide an async SQLite-ready database session dependency."""
-    async with AsyncSessionLocal() as session:
-        yield session
+def get_db() -> Generator[Session, None, None]:
+    """FastAPI dependency that provides a database session."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+__all__ = ["engine", "SessionLocal", "get_db", "init_db"]

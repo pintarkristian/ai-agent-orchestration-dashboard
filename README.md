@@ -28,9 +28,10 @@ ai-agent-orchestration-dashboard/
 │   │   ├── agents/          # Base and role-specific AI agents
 │   │   ├── api/             # API route modules
 │   │   ├── core/            # Configuration and shared settings
-│   │   ├── db/              # Database session foundation
-│   │   ├── models/          # Future database models
-│   │   ├── schemas/         # Future Pydantic request/response schemas
+│   │   ├── db/              # SQLAlchemy SQLite session and ORM models
+│   │   ├── models/          # Pydantic domain models and enums
+│   │   ├── repositories/    # Persistence access layer
+│   │   ├── schemas/         # Future shared Pydantic schemas
 │   │   └── services/        # OpenRouter client and orchestration services
 │   ├── tests/               # Pytest test suite
 │   ├── .env.example         # Backend environment variable template
@@ -65,7 +66,8 @@ The backend is prepared for:
 - Base agent plus specialized planner, research, architect, developer, reviewer, and final answer agents
 - First Planner Agent endpoint at `/api/agents/planner/run`
 - Sequential orchestration endpoint at `/api/workflows/run`
-- SQLite database configuration foundation
+- SQLite persistence with SQLAlchemy for workflow runs and agent steps
+- Workflow history endpoints at `/api/workflows` and `/api/workflows/{workflow_id}`
 - Pytest testing
 
 Run locally:
@@ -93,12 +95,25 @@ curl -X POST http://localhost:8000/api/agents/planner/run \
   -d '{"task": "Create an AI agent orchestration dashboard"}'
 ```
 
-Run the full sequential workflow endpoint:
+Run the full sequential workflow endpoint. This saves the workflow run and each agent step to SQLite:
 
 ```bash
 curl -X POST http://localhost:8000/api/workflows/run \
   -H "Content-Type: application/json" \
   -d '{"task": "Analyze this startup idea and create a technical implementation plan."}'
+```
+
+
+List saved workflow runs:
+
+```bash
+curl http://localhost:8000/api/workflows
+```
+
+Get one saved workflow run:
+
+```bash
+curl http://localhost:8000/api/workflows/<workflow_id>
 ```
 
 Run tests:
@@ -131,12 +146,11 @@ The frontend runs on `http://localhost:5173` by default and expects the backend 
 
 ## Current Scope
 
-This version contains the clean full-stack foundation, the OpenRouter client, specialized backend agents, and the first sequential multi-agent workflow orchestration endpoint.
+This version contains the clean full-stack foundation, the OpenRouter client, specialized backend agents, the sequential multi-agent workflow orchestration endpoint, and SQLite workflow persistence.
 
 Planned future work includes:
 
-1. SQLite workflow run history
-2. React Flow workflow visualization
-3. Real-time workflow status updates
-4. Parallel or conditional orchestration workflows
-5. Docker support
+1. React Flow workflow visualization
+2. Real-time workflow status updates
+3. Parallel or conditional orchestration workflows
+4. Docker support
