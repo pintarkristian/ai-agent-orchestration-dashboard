@@ -1,0 +1,14 @@
+[project]
+name = "ai-agent-orchestration-dashboard-backend"
+version = "0.1.0"
+description = "FastAPI backend foundation for the AI Agent Orchestration Dashboard."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
