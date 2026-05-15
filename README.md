@@ -11,7 +11,8 @@ Instead of sending one prompt to one AI model, this application will eventually 
 Example future agents could include:
 
 - **Planner Agent** — breaks the user request into smaller tasks
-- **Research Agent** — gathers and summarizes information
+- **Research Agent** — analyzes context, market, or useful background information
+- **Technical Architect Agent** — proposes architecture and technology choices
 - **Developer Agent** — writes technical solutions or code
 - **Reviewer Agent** — checks the result for quality, bugs, and missing details
 - **Final Answer Agent** — combines everything into one clean final response
@@ -61,6 +62,7 @@ The backend is prepared for:
 - Pydantic and pydantic-settings
 - Async HTTP requests with `httpx`
 - OpenRouter API integration foundation
+- Base agent plus specialized planner, research, architect, developer, reviewer, and final answer agents
 - First Planner Agent endpoint at `/api/agents/planner/run`
 - SQLite database configuration foundation
 - Pytest testing
@@ -120,12 +122,12 @@ The frontend runs on `http://localhost:5173` by default and expects the backend 
 
 ## Current Scope
 
-This version contains the clean full-stack foundation plus the first simple backend Planner Agent. It does not implement full multi-agent workflow orchestration yet.
+This version contains the clean full-stack foundation plus the first simple backend Planner Agent and the initial set of specialized agent classes. It does not implement full multi-agent workflow orchestration yet.
 
 Planned future work includes:
 
 1. OpenRouter chat completion integration
-2. Agent role definitions
+2. Agent role definitions and prompts
 3. Sequential and parallel orchestration workflows
 4. SQLite workflow run history
 5. React Flow workflow visualization
