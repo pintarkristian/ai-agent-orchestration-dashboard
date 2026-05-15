@@ -8,6 +8,7 @@ Python FastAPI backend foundation for the AI Agent Orchestration Dashboard.
 - Pydantic settings, schemas, and core orchestration data models
 - Async HTTP requests with `httpx`
 - OpenRouter API client foundation
+- Base agent plus specialized planner, research, architect, developer, reviewer, and final answer agents
 - Simple Planner Agent execution endpoint
 - SQLite database configuration foundation
 - Pytest-based testing
@@ -57,4 +58,4 @@ Run tests:
 pytest
 ```
 
-The OpenRouter unit tests use `httpx.MockTransport`, so they do not call the real OpenRouter API.
+The OpenRouter and agent tests use mocks, so they do not call the real OpenRouter API.
