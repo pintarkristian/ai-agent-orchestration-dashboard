@@ -39,12 +39,12 @@ ai-agent-orchestration-dashboard/
 │   └── requirements.txt     # Backend dependencies
 ├── frontend/                # React + TypeScript frontend
 │   ├── src/
-│   │   ├── api/             # Axios API client setup
-│   │   ├── components/      # Future reusable UI components
-│   │   ├── features/        # Future feature-based frontend modules
-│   │   ├── pages/           # Page-level components
+│   │   ├── api/             # Axios API client and workflow API helpers
+│   │   ├── components/      # Layout and reusable UI components
+│   │   ├── lib/             # Shared frontend constants
+│   │   ├── pages/           # Dashboard, workflow run, and history pages
 │   │   ├── styles/          # Tailwind/global styles
-│   │   └── types/           # Future shared TypeScript types
+│   │   └── types/           # Shared TypeScript types
 │   ├── .env.example         # Frontend environment variable template
 │   ├── package.json         # Frontend dependencies and scripts
 │   ├── tailwind.config.ts   # Tailwind CSS configuration
@@ -129,9 +129,11 @@ The frontend is prepared for:
 - React
 - TypeScript
 - Tailwind CSS
-- Axios
+- Axios API client
 - TanStack Query
-- React Flow
+- React Router
+- React Flow dependency for future workflow visualization
+- Responsive dashboard layout with reusable UI components
 
 Run locally:
 
@@ -142,7 +144,7 @@ cp .env.example .env
 npm run dev
 ```
 
-The frontend runs on `http://localhost:5173` by default and expects the backend API at `http://localhost:8000`.
+The frontend runs on `http://localhost:5173` by default and expects the backend API at `http://localhost:8000`. It currently includes Dashboard, Workflow Run, and Workflow History pages without workflow visualization.
 
 ## Current Scope
 
