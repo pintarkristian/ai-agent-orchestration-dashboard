@@ -20,6 +20,7 @@ class WorkflowStep(BaseModel):
     output: str | dict[str, Any] | None = None
     status: WorkflowStatus = WorkflowStatus.PENDING
     error: str | None = None
+    created_at: datetime | None = None
     started_at: datetime | None = None
     completed_at: datetime | None = None
     duration_ms: int | None = Field(default=None, ge=0)
@@ -33,6 +34,7 @@ class WorkflowRun(BaseModel):
     status: WorkflowStatus = WorkflowStatus.PENDING
     steps: list[WorkflowStep] = Field(default_factory=list)
     error: str | None = None
+    created_at: datetime | None = None
     started_at: datetime | None = None
     completed_at: datetime | None = None
     duration_ms: int | None = Field(default=None, ge=0)
@@ -48,6 +50,7 @@ class WorkflowResult(BaseModel):
     status: WorkflowStatus
     steps: list[WorkflowStep] = Field(default_factory=list)
     error: str | None = None
+    created_at: datetime | None = None
     started_at: datetime | None = None
     completed_at: datetime | None = None
     duration_ms: int | None = Field(default=None, ge=0)
