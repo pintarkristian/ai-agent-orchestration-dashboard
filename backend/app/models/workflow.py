@@ -44,12 +44,14 @@ class WorkflowResult(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     input: str | dict[str, Any] | None = None
     output: str | dict[str, Any] | None = None
+    final_answer: str | None = None
     status: WorkflowStatus
     steps: list[WorkflowStep] = Field(default_factory=list)
     error: str | None = None
     started_at: datetime | None = None
     completed_at: datetime | None = None
     duration_ms: int | None = Field(default=None, ge=0)
+    total_duration_ms: int | None = Field(default=None, ge=0)
 
 
 __all__ = [

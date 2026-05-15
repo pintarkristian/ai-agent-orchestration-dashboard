@@ -10,6 +10,7 @@ Python FastAPI backend foundation for the AI Agent Orchestration Dashboard.
 - OpenRouter API client foundation
 - Base agent plus specialized planner, research, architect, developer, reviewer, and final answer agents
 - Simple Planner Agent execution endpoint
+- Sequential multi-agent orchestration service and `/api/workflows/run` endpoint
 - SQLite database configuration foundation
 - Pytest-based testing
 
@@ -52,10 +53,18 @@ curl -X POST http://localhost:8000/api/agents/planner/run \
   -d '{"task": "Create an AI agent orchestration dashboard"}'
 ```
 
+Run the full sequential workflow endpoint:
+
+```bash
+curl -X POST http://localhost:8000/api/workflows/run \
+  -H "Content-Type: application/json" \
+  -d '{"task": "Analyze this startup idea and create a technical implementation plan."}'
+```
+
 Run tests:
 
 ```bash
 pytest
 ```
 
-The OpenRouter and agent tests use mocks, so they do not call the real OpenRouter API.
+The OpenRouter, agent, and orchestration tests use mocks, so they do not call the real OpenRouter API.
