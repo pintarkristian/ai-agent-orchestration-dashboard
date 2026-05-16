@@ -134,6 +134,8 @@ The frontend is prepared for:
 - React Router
 - React Flow dependency for future workflow visualization
 - Responsive dashboard layout with reusable UI components
+- Workflow run form connected to `POST /api/workflows/run`
+- Final answer and per-agent step result cards
 
 Run locally:
 
@@ -144,11 +146,11 @@ cp .env.example .env
 npm run dev
 ```
 
-The frontend runs on `http://localhost:5173` by default and expects the backend API at `http://localhost:8000`. It currently includes Dashboard, Workflow Run, and Workflow History pages without workflow visualization.
+The frontend runs on `http://localhost:5173` by default and expects the backend API at `http://localhost:8000`. It includes Dashboard, Workflow Run, and Workflow History pages. The Workflow Run page submits tasks to `POST /api/workflows/run`, shows loading/error states, displays the final answer, and renders each agent step in a readable card layout. Workflow visualization is intentionally not implemented yet.
 
 ## Current Scope
 
-This version contains the clean full-stack foundation, the OpenRouter client, specialized backend agents, the sequential multi-agent workflow orchestration endpoint, and SQLite workflow persistence.
+This version contains the clean full-stack foundation, the OpenRouter client, specialized backend agents, the sequential multi-agent workflow orchestration endpoint, SQLite workflow persistence, and a functional frontend workflow run UI.
 
 Planned future work includes:
 

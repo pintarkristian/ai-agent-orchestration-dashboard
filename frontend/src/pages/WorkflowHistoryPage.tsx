@@ -4,6 +4,31 @@ import { Card } from '../components/ui/Card';
 import { ErrorState } from '../components/ui/ErrorState';
 import { LoadingState } from '../components/ui/LoadingState';
 import { StatusBadge } from '../components/ui/StatusBadge';
+import type { WorkflowValue } from '../types/workflow';
+
+function formatWorkflowValue(value: WorkflowValue | undefined): string {
+  if (value === null || value === undefined || value === '') {
+    return 'Untitled workflow task';
+  }
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  return JSON.stringify(value);
+}
+
+function formatDuration(durationMs?: number | null): string {
+  if (durationMs === null || durationMs === undefined) {
+    return '—';
+  }
+
+  if (durationMs >= 1000) {
+    return `${(durationMs / 1000).toFixed(durationMs >= 10000 ? 1 : 2)} s`;
+  }
+
+  return `${durationMs} ms`;
+}
 
 export default function WorkflowHistoryPage() {
   const workflowsQuery = useQuery({
@@ -30,7 +55,7 @@ export default function WorkflowHistoryPage() {
           {workflowsQuery.data.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
               <h3 className="text-base font-semibold text-slate-950">No workflow runs yet</h3>
-              <p className="mt-2 text-sm text-slate-500">Run your first workflow from the backend API to populate this table.</p>
+              <p className="mt-2 text-sm text-slate-500">Run your first workflow from the Workflow Run page to populate this table.</p>
             </div>
           ) : (
             <div className="overflow-hidden rounded-2xl border border-slate-200">
@@ -47,10 +72,10 @@ export default function WorkflowHistoryPage() {
                   <tbody className="divide-y divide-slate-200 bg-white">
                     {workflowsQuery.data.map((workflow) => (
                       <tr key={workflow.id} className="hover:bg-slate-50">
-                        <td className="max-w-xl px-4 py-4 font-medium text-slate-900">{workflow.task}</td>
+                        <td className="max-w-xl px-4 py-4 font-medium text-slate-900">{workflow.task ?? formatWorkflowValue(workflow.input)}</td>
                         <td className="px-4 py-4"><StatusBadge status={workflow.status} /></td>
                         <td className="px-4 py-4 text-slate-600">{workflow.steps?.length ?? 0}</td>
-                        <td className="px-4 py-4 text-slate-600">{workflow.total_duration_ms ?? 0} ms</td>
+                        <td className="px-4 py-4 text-slate-600">{formatDuration(workflow.total_duration_ms ?? workflow.duration_ms)}</td>
                       </tr>
                     ))}
                   </tbody>

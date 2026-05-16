@@ -8,6 +8,8 @@ export type AgentRole =
   | 'reviewer'
   | 'final_answer';
 
+export type WorkflowValue = string | Record<string, unknown> | null;
+
 export interface HealthResponse {
   status: string;
   version: string;
@@ -17,8 +19,10 @@ export interface HealthResponse {
 export interface WorkflowStep {
   id: string;
   role: AgentRole;
-  input: string;
-  output?: string | null;
+  name: string;
+  description?: string | null;
+  input?: WorkflowValue;
+  output?: WorkflowValue;
   status: WorkflowStatus;
   error?: string | null;
   started_at?: string | null;
@@ -28,13 +32,17 @@ export interface WorkflowStep {
 
 export interface WorkflowRun {
   id: string;
-  task: string;
+  input?: WorkflowValue;
+  task?: string;
+  output?: WorkflowValue;
   status: WorkflowStatus;
   steps: WorkflowStep[];
   final_answer?: string | null;
   error?: string | null;
   created_at?: string | null;
+  started_at?: string | null;
   completed_at?: string | null;
+  duration_ms?: number | null;
   total_duration_ms?: number | null;
 }
 
